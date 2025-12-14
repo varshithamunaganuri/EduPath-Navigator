@@ -1,6 +1,6 @@
-# EDuPath Navigator
+# EduPath Navigator
 
-**EDuPath Navigator** is a web-based platform that helps students explore and navigate different educational paths. Users can choose their current level of education and discover the possible next steps to plan their academic journey effectively.  
+**EduPath Navigator** is a web-based platform that helps students explore and navigate different educational paths. Users can choose their current level of education and discover the possible next steps to plan their academic journey effectively.  
 
 ## Demo
 Check out the live demo here: (https://varshithamunaganuri.github.io/EduPath-Navigator/)  
