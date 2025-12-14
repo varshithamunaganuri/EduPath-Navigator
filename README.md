@@ -16,5 +16,5 @@ Check out the live demo here: (https://varshithamunaganuri.github.io/EduPath-Nav
 - Include detailed resources and guidance for each path.  
 
 ## Contributors
-- **Varshita Munaganuri** – [LinkedIn](https://www.linkedin.com/in/varshita-munaganuri)  
+- **Varshita Munaganuri** – [LinkedIn](https://www.linkedin.com/in/varshitha-munaganuri-a730b7262/) 
 
