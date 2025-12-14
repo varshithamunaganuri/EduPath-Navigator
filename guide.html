@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduPath Navigator — Your Complete Guide</title>
+  
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-dark: #1e3a8a;
+      --accent: #3b82f6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-800: #1e293b;
+      --gray-900: #0f172a;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, var(--gray-50) 0%, #e2e8f0 100%);
+      color: var(--gray-900);
+      line-height: 1.7;
+      overflow-x: auto;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(30, 64, 175, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      animation: float 20s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    header h1 {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 800;
+      margin: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      opacity: 0.95;
+      margin-top: 0.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    .section {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: all 0.3s ease;
+    }
+
+    .section:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+    }
+
+    .section-icon {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .section-icon::before {
+      content: '';
+      width: 3px;
+      height: 3rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 2px;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin: 0 0 1.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--gray-800);
+      margin: 2rem 0 1rem 0;
+      padding-left: 1rem;
+      border-left: 4px solid var(--accent);
+    }
+
+    .steps {
+      display: grid;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .step {
+      display: flex;
+      gap: 1rem;
+      padding: 1.5rem;
+      background: var(--gray-100);
+      border-radius: 12px;
+      border-left: 5px solid var(--success);
+      transition: all 0.3s ease;
+    }
+
+    .step:hover {
+      background: var(--white);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .step-number {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: var(--success);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .qualifications-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .qualification-card {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border: 2px solid var(--accent);
+      border-radius: 16px;
+      padding: 1.75rem;
+      transition: all 0.3s ease;
+    }
+
+    .qualification-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+    }
+
+    .qualification-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.75rem;
+    }
+
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .tip-card {
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border-left: 5px solid var(--success);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+    }
+
+    .tip-emoji {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .search-tip {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border-left-color: var(--warning);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      margin: 1.5rem 0;
+      box-shadow: 0 8px 25px rgba(30, 64, 175, 0.3);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(30, 64, 175, 0.4);
+    }
+
+    .cta-home {
+      background: linear-gradient(135deg, var(--success), #059669);
+    }
+
+    .cta-home:hover {
+      box-shadow: 0 12px 35px rgba(16, 185, 129, 0.4);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      background: var(--gray-900);
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 2rem 1rem;
+      }
+      
+      .section {
+        padding: 2rem 1.5rem;
+      }
+      
+      .steps {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @media print {
+      body { background: white; }
+      .section { box-shadow: none; border: 1px solid #ccc; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>EduPath Navigator</h1>
+    <p class="hero-subtitle">Your personalized roadmap to the perfect academic & career path</p>
+  </header>
+
+  <div class="container">
+    <!-- Quick Start -->
+    <div class="section">
+      <div class="section-icon">
+        <span>🚀</span>
+      </div>
+      <h2>Find Your Path in 15 Seconds</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div>
+            <strong>🔥 Go to Home Page</strong><br>
+            <a href="index.html" class="cta-button cta-home" style="margin: 0.5rem 0 0 0; font-size: 1rem; padding: 0.75rem 1.5rem;">
+              🏠 Start Here
+            </a>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div>
+            <strong>Select Qualification</strong><br>
+            Choose your latest: 10th, Intermediate, Diploma, B.Tech, etc.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div>
+            <strong>Click "Find My Path"</strong><br>
+            Get instant personalized recommendations
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div>
+            <strong>Explore & Decide</strong><br>
+            Browse organized career & course options
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <!-- FAQ Section -->
+    <div class="section">
+      <div class="section-icon">
+        <span>❓</span>
+      </div>
+      <h2>Common Questions</h2>
+      
+      <h3>Which option is best for me?</h3>
+      <p>Every path has unique pros/cons. Consider your interests, budget, 
+      duration, and career goals. Use our detailed course pages for deep dives.</p>
+      
+      <h3>Are entrance exams mandatory?</h3>
+      <p>Professional courses (B.Tech, Medical, Law) usually require them. 
+      Regular degrees often admit based on your marks.</p>
+      
+      <h3>What about job guarantees?</h3>
+      <p>No course guarantees jobs, but we highlight placement-focused 
+      programs and skill certifications with strong industry demand.</p>
+    </div>
+
+    <!-- Final CTA -->
+    <div class="section" style="text-align: center; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white;">
+      <h2 style="color: white; margin-bottom: 1rem;">Ready to Discover Your Path?</h2>
+      <p style="font-size: 1.2rem; opacity: 0.95;">Thousands of students found their direction. You will too.</p>
+      <a href="index.html" class="cta-button" style="background: white; color: var(--primary); font-weight: 700;">
+        🎯 Go to Home Page → Find My Perfect Path
+      </a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2025 EduPath Navigator — Empowering 1M+ students | All rights reserved</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduPath Navigator - Career Paths</title>
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-dark: #1e3a8a;
+      --accent: #3b82f6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-800: #1e293b;
+      --gray-900: #0f172a;
+      --white: #ffffff;
+      --glass-bg: rgba(255, 255, 255, 0.1);
+      --glass-border: rgba(255, 255, 255, 0.2);
+      --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      color: var(--white);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+      z-index: -1;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(1deg); }
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: var(--shadow-xl);
+      position: relative;
+      backdrop-filter: blur(20px);
+    }
+
+    .header h1 {
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--white) 0%, #e2e8f0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+      letter-spacing: -0.025em;
+    }
+
+    .main-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .path-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-xl);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .path-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--success), var(--warning), var(--accent));
+      border-radius: 24px 24px 0 0;
+    }
+
+    .path-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+      border-color: rgba(59, 130, 246, 0.5);
+    }
+
+    .category-title {
+      font-size: clamp(1.25rem, 3vw, 1.5rem);
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      color: var(--white);
+      padding-bottom: 0.75rem;
+      position: relative;
+    }
+
+    .category-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--success));
+      border-radius: 2px;
+    }
+
+    .paths-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .path-item {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(71, 85, 105, 0.5);
+      border-radius: 16px;
+      padding: 1.25rem;
+      transition: all 0.3s ease;
+      animation: slideInUp 0.6s ease-out forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .path-item:nth-child(odd) { animation-delay: 0.1s; }
+    .path-item:nth-child(even) { animation-delay: 0.2s; }
+
+    .path-item:hover {
+      background: rgba(51, 65, 85, 0.8);
+      border-color: var(--accent);
+      transform: translateX(4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .path-item strong {
+      display: block;
+      color: var(--accent);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .path-item ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .path-item li {
+      padding: 0.25rem 0;
+      font-size: 0.95rem;
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .path-item li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--success);
+      font-weight: bold;
+    }
+
+    .back-section {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2.5rem;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+
+    .back-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-xl);
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--accent) 100%);
+    }
+
+    .error-card {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      border-radius: 24px;
+      padding: 3rem;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .error-card h2 {
+      color: #fecaca;
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .main-content { padding: 1rem; }
+      .path-card { padding: 2rem 1.5rem; margin-bottom: 1.5rem; }
+      .paths-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .back-btn { padding: 0.875rem 2rem; font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1 id="pageTitle">Career Paths</h1>
+  </header>
+
+  <main class="main-content">
+    <div id="contentArea">
+      <!-- Dynamic content will be injected here -->
+    </div>
+
+    <div class="back-section">
+      <a href="index.html" class="back-btn">
+        ⬅ Back to Home
+      </a>
+    </div>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const degree = params.get("degree");
+
+    const careerPaths = [
+      // Your complete data object (unchanged - all 10+ qualifications preserved)
+      {
+        key: "ssc",
+        title: "SSC / 10th Class",
+        paths: [
+          { category: "Intermediate (General Stream)", items: ["MPC", "BiPC", "CEC", "MEC", "HEC"] },
+          { category: "Other Options After 10th", items: ["Beauty & Cosmetology", "Jewellery Designing", "Fashion Designing", "Photography"] },
+          {
+            category: "Polytechnic Diploma (3 Years)",
+            items: ["Mechanical", "Computer Science", "Civil", "EEE/Tripoli", "IT", "Automobile", "Electronics & Communication", "Biotechnology", "Chemical", "Aeronautical", "Agriculture", "Architecture", "Biomedical", "Marine Technology", "Mining Technology", "Leather Technology", "Textile Technology", "Petroleum Technology", "Plastic Technology", "Rubber Technology"]
+          },
+          {
+            category: "ITI (Industrial Training Institute - 2 Years)",
+            items: ["Fitter", "Computer", "Civil", "Mechanical", "Electrical", "Plumber", "Surveyor", "Machine Tools", "Welder", "Fireman", "Cookery", "Paint Technology"]
+          },
+          { category: "Paramedical Courses (3 Years)", items: ["DMLT", "DHFM", "DOA", "DOT", "Health Inspector", "Sanitary Inspector"] },
+          {
+            category: "Short-Term Courses (6 Months – 1 Year)",
+            items: ["DTP", "PGDCA", "Tally", "Internet", "Graphic Designing", "Animation", "Web Designing", "Cyber Security"]
+          },
+          { category: "Other Courses", items: ["Tribal IT"] },
+          { category: "Government Job Options", items: ["VRA", "Military", "AWW/AWH", "Driver Posts"] }
+        ]
+      },
+      // ... (all your other qualifications - mbbs, btech, bcom, etc. - FULLY PRESERVED)
+      {
+        key: "inter-mpc",
+        title: "Intermediate (MPC)",
+        paths: [
+          {
+            category: "Engineering (B.E / B.Tech - 4 Years)",
+            items: ["Computer Science Engineering (CSE)", "Information Technology (IT)", "Electronics & Communication Engineering (ECE)", "Electrical & Electronics Engineering (EEE)", "Civil Engineering", "Mechanical Engineering", "Chemical Engineering", "Aeronautical Engineering", "Aerospace Engineering", "Agricultural Engineering", "Automobile Engineering", "Biomedical Engineering", "Biotechnology Engineering", "Ceramic Engineering", "Industrial Engineering", "Environmental Engineering", "Marine Engineering", "Mining Engineering", "Silica Engineering", "Textile Engineering"]
+          },
+          { category: "Degree Courses (3 Years)", items: ["B.A", "B.Sc", "B.Com", "BBA", "BBM", "BCA", "LLB"] },
+          { category: "Dual Degree Programs (4–5 Years)", items: ["BA + LLB", "BBA + LLB", "BBM + LLB", "B.Com + LLB", "BA + B.Ed", "B.Sc + B.Ed"] },
+          { category: "Professional Courses", items: ["ICWA", "CS", "CA"] }
+        ]
+      },
+        {
+      key: "inter-bipc",
+      title: "Intermediate (BiPC / Medical)",
+      paths: [
+        {
+          category: "Medical Degrees (5–6 Years)",
+          items: ["MBBS", "BDS", "BVSc", "BUMS", "BHMS", "BAMS", "BNYS"]
+        },
+        {
+          category: "Allied Health Sciences (2–4 Years)",
+          items: [
+            "BPT Physiotherapy", "BSc Nursing", "B.Pharmacy", "BSc Anesthesia Technology",
+            "BSc Cardiac Technology", "BSc MLT", "BSc Radiotherapy / Radiology",
+            "BSc Nuclear Medicine", "BSc Operation Theater Technology",
+            "BSc Physician Assistant", "BSc Respiratory Care", "BSc Optometry"
+          ]
+        },
+        {
+          category: "Agriculture & Life Science",
+          items: ["BSc Agriculture", "BSc Biotechnology", "BSc Microbiology", "BSc Genetics"]
+        }
+      ]
+    },
+{
+  key: "inter-commerce-arts",  // single key for CEC, MEC, HEC
+  title: "Intermediate (Commerce & Arts - CEC / MEC / HEC)",
+  paths: [
+    {
+      category: "Commerce & Management Degrees",
+      items: [
+        "B.Com",
+        "BBA",
+        "BBM",
+        "BCA",
+        "Actuarial Science",
+        "Finance",
+        "Economics"
+      ]
+    },
+    {
+      category: "Professional Courses",
+      items: [
+        "CA (Chartered Accountant)",
+        "CS (Company Secretary)",
+        "ICWA",
+        "Banking & Insurance",
+        "Financial Analyst"
+      ]
+    },
+    {
+      category: "Arts & Humanities Degrees",
+      items: [
+        "BA (History, Economics, Political Science, Sociology, Psychology)",
+        "BFA",
+        "Journalism",
+        "Hotel Management",
+        "Event Management",
+        "Mass Communication"
+      ]
+    }
+  ]
+},
+{
+  key: "be-btech",
+  title: "B.E / B.Tech (Engineering Graduate)",
+  paths: [
+    {
+      category: "Higher Studies (Technical)",
+      items: [
+        "M.Tech / M.E – Specializations: Structural Engg., VLSI Design, Robotics, Thermal Engg., Machine Design",
+        "GATE Exam Preparation",
+        "M.S Abroad (AI, Data Science, Computer Science, Cybersecurity)",
+        "GRE + TOEFL/IELTS Exams",
+        "Ph.D (Research & Academia)"
+      ]
+    },
+    {
+      category: "Job Roles – Technical",
+      items: [
+        "Software Engineer",
+        "R&D Engineer",
+        "Design Engineer",
+        "Technical Architect",
+        "Systems Engineer",
+        "Assistant Professor (after M.Tech)"
+      ]
+    },
+    {
+      category: "Management & Business (Post‑Graduation)",
+      items: [
+        "MBA (Finance, Marketing, HR, Operations, Business Analytics)",
+        "PGDM (Industry-focused Management Program)",
+        "CFA (Investment & Finance Certification)",
+        "PG in Business Analytics"
+      ]
+    },
+    {
+      category: "Management Job Roles",
+      items: [
+        "Product Manager",
+        "Project Manager",
+        "Business Analyst",
+        "Operations Manager",
+        "Management Consultant",
+        "Marketing Manager"
+      ]
+    },
+    {
+      category: "Skill-Based Professional Courses",
+      items: [
+        "Data Science / AI / Machine Learning (Python, ML, DL)",
+        "Full Stack Development (React, Node.js, Java/Python)",
+        "Cloud Computing (AWS, Azure, GCP)",
+        "Cybersecurity (CEH, SOC Analyst, Network Security)",
+        "DevOps (Docker, Kubernetes, CI/CD)"
+      ]
+    },
+    {
+      category: "Skill-Based Job Roles",
+      items: [
+        "Machine Learning Engineer",
+        "Data Scientist",
+        "AI Specialist",
+        "Full Stack Developer",
+        "Cloud Architect",
+        "DevOps Engineer",
+        "Cybersecurity Analyst",
+        "Ethical Hacker"
+      ]
+    },
+    {
+      category: "Government & PSU Opportunities",
+      items: [
+        "PSU Jobs via GATE (BHEL, IOCL, ONGC, DRDO, ISRO, NTPC)",
+        "SSC JE / AE",
+        "RRB Engineering Posts",
+        "Govt. Technical Assistant Posts"
+      ]
+    }
+  ]
+},
+{
+  key: "bcom",
+  title: "B.Com (Bachelor of Commerce)",
+  paths: [
+    {
+      category: "Professional & Certification Courses (Finance & Accounting)",
+      items: [
+        "CA (Chartered Accountancy) – Accounting, Taxation, Auditing | Jobs: CA, Auditor, Financial Controller",
+        "CMA (Cost & Management Accounting) – Cost control, Management planning | Jobs: Cost Accountant, Financial Analyst",
+        "CS (Company Secretary) – Corporate governance, Legal compliance | Jobs: Company Secretary, Legal Compliance Officer",
+        "CFA (Chartered Financial Analyst) – Investment analysis, Portfolio management | Jobs: Investment Banker, Research Analyst, Portfolio Manager"
+      ]
+    },
+    {
+      category: "Higher Education (PG for Management & Academia)",
+      items: [
+        "MBA – Management, Leadership, Finance, Marketing, HR | Jobs: Finance Manager, Marketing Head, Management Consultant",
+        "M.Com – Commerce, Business Studies, Economics | Jobs: Lecturer/Professor, Research Associate, Content Writer",
+        "MCA – IT/Software Development (for B.Com Computers) | Jobs: Software Developer, Systems Analyst, IT Consultant",
+        "LL.B – Corporate/Tax Law | Jobs: Corporate Lawyer, Tax Advocate, Legal Advisor"
+      ]
+    },
+    {
+      category: "Skill-Based & Direct Job Courses",
+      items: [
+        "Data Analytics / Business Intelligence – Advanced Excel, SQL, Tableau, Python | Jobs: Business Analyst, Data Analyst",
+        "Digital Marketing – SEO, SEM, Social Media, Content Strategy | Jobs: Digital Marketing Specialist, E-commerce Analyst",
+        "Government / Bank Exams – Quantitative Aptitude, Reasoning, Banking Awareness | Jobs: Bank PO, Bank Clerk, SSC CGL",
+        "Certified Public Accountant (CPA) – Accounting careers abroad | Jobs: International Auditor, Financial Reporting Specialist"
+      ]
+    }
+  ]
+},
+
+{
+  key: "bsc",
+  title: "B.Sc (Bachelor of Science)",
+  paths: [
+    {
+      category: "Higher Studies – Postgraduate & Research",
+      items: [
+        "M.Sc – Specializations like Physics, Chemistry, Biology, Mathematics | Jobs: Lecturer, Research Associate, Lab Scientist",
+        "M.Tech / M.E (for applied sciences & engineering fields) | Jobs: R&D Engineer, Technical Specialist",
+        "M.Phil / Ph.D – Advanced research in chosen scientific field | Jobs: Research Scientist, Professor, Academic Researcher",
+        "MCA / Data Science / AI (for B.Sc in Computer Science / IT) | Jobs: Software Developer, Data Analyst, ML Engineer"
+      ]
+    },
+    {
+      category: "Professional Certifications & Skill Courses",
+      items: [
+        "Data Science / Machine Learning / AI | Skills: Python, R, SQL, TensorFlow, PyTorch | Jobs: Data Scientist, ML Engineer, AI Specialist",
+        "Bioinformatics / Biotechnology Certifications | Jobs: Bioinformatician, Lab Technician, Biotech Analyst",
+        "Environmental Science / Sustainability Certifications | Jobs: Environmental Analyst, Consultant",
+        "Lab Technician Courses / Clinical Lab Technology | Jobs: Lab Technician, Research Assistant"
+      ]
+    },
+    {
+      category: "Government, PSU & Competitive Exams",
+      items: [
+        "UPSC / State PSC Exams – Scientist, Analyst, Technical Officer",
+        "CSIR / ICMR / DRDO / ISRO Junior Research Fellowships",
+        "Bank / SSC Exams – Specialist Officer, Clerk, PO"
+      ]
+    },
+    {
+      category: "Direct Job Roles",
+      items: [
+        "Laboratory Technician / Assistant",
+        "Quality Control Analyst",
+        "Research Assistant",
+        "Environmental Analyst",
+        "Biotech Analyst",
+        "Data Analyst (for B.Sc in Statistics / Computer Science)"
+      ]
+    }
+  ]
+},
+{
+  key: "bca",
+  title: "BCA / B.Sc. IT (Computer Applications / Information Technology)",
+  paths: [
+    {
+      category: "Postgraduate Courses & Higher Studies",
+      items: [
+        "MCA (Master of Computer Applications) – Core PG course for software and IT roles | Jobs: Software Developer, System Analyst, IT Consultant",
+        "MBA (IT Management / Business Analytics) – Transition to management & analytics roles | Jobs: Product Manager, Business Analyst, Project Manager",
+        "M.Sc. Computer Science – Advanced theory, algorithms, research | Jobs: Lecturer, Research Associate, Software Engineer",
+        "M.Tech (IT / Computer Engineering) – Specializations like AI, Data Science, Cybersecurity | Jobs: R&D Engineer, Technical Architect, Data Scientist"
+      ]
+    },
+    {
+      category: "Skill-Based & Professional Certifications",
+      items: [
+        "Data Science / Machine Learning / AI – Python, R, SQL, TensorFlow, PyTorch | Jobs: Data Scientist, ML Engineer, AI Specialist",
+        "Cloud Computing Certifications – AWS, Azure, GCP | Jobs: Cloud Solutions Architect, DevOps Engineer, Site Reliability Engineer",
+        "Cybersecurity / Ethical Hacking – CEH, Network Security, Digital Forensics | Jobs: Security Analyst, Ethical Hacker, Security Consultant",
+        "Full Stack Development – HTML, CSS, JavaScript (React/Angular), Node.js, Database | Jobs: Full Stack Developer, Software Engineer",
+        "Business Intelligence / Data Analytics – Tableau, Power BI, SQL | Jobs: Data Analyst, BI Developer, Business Analyst"
+      ]
+    },
+    {
+      category: "Direct Job Opportunities",
+      items: [
+        "Software Developer / Programmer",
+        "Web Developer / Frontend / Backend Developer",
+        "System Administrator / IT Support",
+        "Software Tester / QA Analyst",
+        "IT Consultant / Technical Support Analyst",
+        "Business Analyst / Data Analyst (for analytics roles)"
+      ]
+    },
+    {
+      category: "Government & Competitive Exams",
+      items: [
+        "Banking Exams – PO, Clerk, Specialist Officer",
+        "SSC / Govt IT Posts – IT Officer, Technical Assistant",
+        "PSU Jobs via GATE (for technical IT roles)"
+      ]
+    }
+  ]
+},
+
+{
+  key: "ba",
+  title: "B.A (Bachelor of Arts)",
+  paths: [
+    {
+      category: "Higher Education – PG & Professional Specialization",
+      items: [
+        "M.A – Specialization in Psychology, Economics, History, Sociology, English | Jobs: Lecturer/Professor (after NET/JRF), Researcher, Content Developer",
+        "MBA – Management & Leadership (HR, Marketing, Operations) | Jobs: HR Manager, Marketing Manager, PR Specialist, Management Consultant",
+        "LL.B (3 Years) – Professional Law degree | Jobs: Advocate, Corporate Lawyer, Legal Consultant, Judicial Services",
+        "B.Ed – Teaching qualification for school level | Jobs: School Teacher, Curriculum Developer, Educational Administrator",
+        "MSW – Social Work, Community Development, Policy | Jobs: Social Worker, NGO Administrator, CSR Manager"
+      ]
+    },
+    {
+      category: "Government & Public Service – Competitive Exams",
+      items: [
+        "Civil Services – IAS, IPS, IFS, State PSC | Jobs: IAS/IPS Officer, Foreign Service Officer, Administrative Officer",
+        "SSC-CGL – Central Government Administrative Posts | Jobs: Assistant Section Officer, Auditor, Inspector (Income Tax/Central Excise)",
+        "Bank PO/Clerk Exams – Banking Sector | Jobs: Probationary Officer (PO), Bank Clerk, RBI Assistant",
+        "Indian Railways / Defense Services – Administrative & HR roles | Jobs: Various clerical and administrative positions"
+      ]
+    },
+    {
+      category: "Specialized Job-Related Courses & Skills",
+      items: [
+        "Journalism & Mass Communication (PG Diploma) – Reporting, Editing, Video Production, Media Ethics | Jobs: Reporter, Editor, Content Writer, PR Specialist, Media Analyst",
+        "Digital Marketing – SEO, SEM, Content Creation, Social Media Analytics | Jobs: Digital Marketing Specialist, Social Media Manager, Copywriter",
+        "Data Analytics / Visualization – SQL, Tableau/Power BI, Statistical Analysis (Recommended: Maths/Statistics background) | Jobs: Market Researcher, BI Analyst, Data Analyst",
+        "Travel & Tourism / Hotel Management – Event Management, Customer Relations | Jobs: Travel Consultant, Event Planner, Hotel Manager, Tourism Officer",
+        "Foreign Language Certification – French, German, Spanish, Japanese | Jobs: Translator, Interpreter, Language Specialist in MNCs"
+      ]
+    }
+  ]
+},
+{
+  key: "mbbs",
+  title: "MBBS (Bachelor of Medicine & Bachelor of Surgery)",
+  paths: [
+    {
+      category: "Clinical Postgraduate & Super-Specialty",
+      items: [
+        "MD (Non-surgical specializations: General Medicine, Pediatrics, Dermatology, Psychiatry, Radiology, Anesthesiology)",
+        "MS (Surgical specializations: General Surgery, Orthopedics, ENT, Ophthalmology, OBG)",
+        "DNB (Diplomate of National Board – clinical and surgical specialties)",
+        "DM / MCh (Super-specialty e.g., Cardiology, Neurology, Neurosurgery, Urology) - requires MD/MS/DNB"
+      ]
+    },
+    {
+      category: "Fellowships & Short Advanced Training",
+      items: [
+        "Fellowship in Critical Care (ICU medicine)",
+        "Fellowship in Emergency Medicine (ER practice)",
+        "Fellowship in Diabetology / Endocrinology",
+        "Fellowship in Cosmetology / Aesthetic Medicine",
+        "Fellowship in IVF & Reproductive Medicine",
+        "Fellowship in Cardiology / Interventional skills (post-PG level)",
+        "Short clinical fellowships (6 months–2 years) in niche areas"
+      ]
+    },
+    {
+      category: "Non-Clinical / Para-Clinical Postgraduate",
+      items: [
+        "MD Pathology",
+        "MD Microbiology",
+        "MD Pharmacology",
+        "MD Forensic Medicine",
+        "MD Community Medicine (PSM)",
+        "MD Anatomy / Physiology / Biochemistry (basic sciences)"
+      ]
+    },
+    {
+      category: "Management, Public Health & Administration",
+      items: [
+        "MBA / MBA (Hospital Administration) / MHA",
+        "MPH (Master of Public Health) – Epidemiology, Health Policy",
+        "MHM / PGDM in Health Management / Health Informatics",
+        "Diploma / Certification in Healthcare Quality (NABH/NABL)"
+      ]
+    },
+    {
+      category: "Research, Clinical Trials & Biotech",
+      items: [
+        "M.Sc Clinical Research / M.Sc Biotechnology / M.Sc Genetics",
+        "PG Diploma in Clinical Trials / Biostatistics",
+        "PhD (Biomedical Sciences / Medical Research)",
+        "Clinical Research Coordinator / CRA roles"
+      ]
+    },
+    {
+      category: "Government, Armed Forces & Public Sector",
+      items: [
+        "UPSC CMS (Combined Medical Services) – Central govt medical posts",
+        "State PSC Medical Officer posts",
+        "Armed Forces Medical Services (Army/Navy/Air Force doctor roles)",
+        "Railway Medical Services, ESIC, CGHS Medical Officer posts"
+      ]
+    },
+    {
+      category: "International Licensing & Careers",
+      items: [
+        "USMLE (USA) – for US residency & practice",
+        "PLAB / UKMLA (UK) – for NHS practice",
+        "AMC (Australia), MCCQE (Canada), NZREX (NZ), SMLE / DHA / HAAD (Gulf) – country licensing exams"
+      ]
+    },
+    {
+      category: "Short-Term / Skill-Focused Courses (6–12 months)",
+      items: [
+        "Certificate in Diabetology",
+        "Certificate in Critical Care / Emergency Medicine",
+        "PG Diploma in Ultrasound (Sonography) — check local regulatory rules (PCPNDT)",
+        "Certificate in Clinical Cosmetology / Aesthetics",
+        "Diploma in Industrial / Occupational Health",
+        "Medical Coding & Health Informatics Certifications"
+      ]
+    },
+    {
+      category: "Direct Job Roles (Without Immediate PG)",
+      items: [
+        "Medical Officer (Government / Private clinics / PHC)",
+        "Resident Doctor / Junior Doctor",
+        "Emergency Medical Officer / Casualty Medical Officer",
+        "Rural Health Practitioner / Telemedicine Doctor",
+        "Pharma Medical Advisor / Medical Affairs / Pharmacovigilance",
+        "Clinical Research Coordinator / Medical Content Specialist"
+      ]
+    }
+  ]
+}
+
+    ];
+
+    const pageTitle = document.getElementById('pageTitle');
+    const contentArea = document.getElementById('contentArea');
+
+    function displayPaths(degreeKey) {
+      const selectedPath = careerPaths.find(path => path.key === degreeKey);
+
+      if (selectedPath) {
+        pageTitle.textContent = `Career Paths After ${selectedPath.title}`;
+        contentArea.innerHTML = selectedPath.paths.map((section, index) => `
+          <section class="path-card" style="animation-delay: ${index * 0.1}s">
+            <h2 class="category-title">${section.category}</h2>
+            <div class="paths-grid">
+              ${section.items.map((item, itemIndex) => `
+                <div class="path-item" style="animation-delay: ${itemIndex * 0.05}s">
+                  <strong>${item}</strong>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        `).join('');
+      } else {
+        pageTitle.textContent = 'Qualification Not Found';
+        contentArea.innerHTML = `
+          <div class="error-card">
+            <h2>🔍 No Paths Found</h2>
+            <p style="font-size: 1.25rem; margin-top: 1rem;">The selected qualification could not be matched.<br>Go back and select a valid option from the home page.</p>
+          </div>
+        `;
+      }
+    }
+
+    if (degree) {
+      displayPaths(degree);
+    } else {
+      pageTitle.textContent = 'Select Qualification First';
+      contentArea.innerHTML = `
+        <div class="error-card">
+          <h2>📋 No Qualification Selected</h2>
+          <p style="font-size: 1.25rem; margin-top: 1rem;">Please go back to the home page and select your qualification.</p>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

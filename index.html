@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPath Navigator - Select Qualification</title>
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-dark: #1e3a8a;
+            --accent: #3b82f6;
+            --success: #10b981;
+            --gray-100: #f1f5f9;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --white: #ffffff;
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--white);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- Global Background Effects (from path.html) --- */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -2;
+        }
+        
+        /* --- HEADER (Matching path.html) --- */
+        .main-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow-xl);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .main-header h1 {
+            font-size: clamp(1.75rem, 4vw, 2.25rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--white) 0%, #e2e8f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+            letter-spacing: -0.025em;
+        }
+
+        /* --- Navigation Bar --- */
+        .nav-bar a {
+            color: var(--gray-100);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: background 0.3s, color 0.3s;
+            margin-left: 0.5rem;
+        }
+
+        .nav-bar a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+        }
+
+        .nav-bar .contact-btn {
+            background: var(--success);
+            color: var(--white);
+            font-weight: 700;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .nav-bar .contact-btn:hover {
+            background: #047857;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* --- MAIN CONTENT & VISUAL AREA --- */
+        .page-container {
+            display: flex;
+            min-height: calc(100vh - 5rem);
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .visual-area {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            /* You must replace 'path/to/your/book_image.jpg' with your actual image file path */
+            background: url('path/to/your/book_image.jpg') no-repeat center bottom/cover; 
+            opacity: 1; 
+            filter: brightness(60%);
+            z-index: -1;
+        }
+        
+        .page-container::before {
+            /* Creates the gradient overlay to make the left side text pop */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(15, 23, 42, 1) 45%, rgba(15, 23, 42, 0.1) 100%);
+            z-index: -1;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 50%;
+            margin-left: 8%;
+            padding: 4rem 1rem;
+            animation: fadeInUp 1s ease-out; /* The animation reference */
+            z-index: 10;
+        }
+
+        .content-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            color: var(--white);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.05em;
+        }
+
+        .tagline {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--gray-100);
+            line-height: 1.5;
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+        
+        .cta-heading {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--success);
+        }
+        
+        /* --- FORM ELEMENTS --- */
+        .selector-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 400px;
+        }
+
+        #qualification {
+            padding: 0.75rem 1.25rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 2px solid var(--accent);
+            background-color: var(--gray-800);
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.3s;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%233b82f6'%3E%3Cpath d='M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.5em;
+        }
+
+        #qualification:focus {
+            outline: none;
+            border-color: var(--success);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.4);
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: var(--white);
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--accent) 100%);
+        }
+
+        /* --- ANIMATIONS (ADDED BACK) --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- RESPONSIVENESS --- */
+        @media (max-width: 900px) {
+            .main-header { padding: 1rem; }
+            .main-header h1 { font-size: 1.5rem; }
+            .nav-bar a { padding: 0.5rem 0.75rem; margin-left: 0.25rem; font-size: 0.9rem; }
+
+            .page-container {
+                display: block;
+                min-height: auto;
+            }
+            .visual-area {
+                position: static;
+                width: 100%;
+                height: 300px;
+                margin-top: -100px;
+            }
+            .page-container::before {
+                display: none;
+            }
+            .main-content {
+                max-width: 100%;
+                margin: 0;
+                padding: 2rem 1rem;
+            }
+            .selector-group {
+                max-width: 100%;
+            }
+            .content-title {
+                font-size: 2.5rem;
+            }
+            .tagline {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="main-header">
+        <h1>EduPath Navigator</h1>
+        <nav class="nav-bar">
+            <a href="Guide.html">Guide</a>
+            <a href="About.html">About</a>
+            <a href="Contact.html" class="contact-btn">Contact</a>
+        </nav>
+    </header>
+    
+    <div class="page-container">
+        
+        <div class="visual-area"></div>
+        
+        <main class="main-content">
+            
+            <h2 class="content-title">Find Your Next Step</h2>
+            
+            <p class="tagline">
+                Not sure what to do next? <strong>EduPath Navigator</strong> gives you a personalized roadmap tailored to your latest qualification, guiding you toward the right career or course with confidence.
+            </p>
+            
+            <form class="selector-group" onsubmit="navigateToPath(event)">
+                <label for="qualification" class="cta-heading">Choose your recent qualification:</label>
+                
+                <select id="qualification" required>
+                    <option value="" selected disabled>-- Select Option --</option>
+                    </select>
+                
+                <button type="submit" class="submit-btn">Find My Path</button>
+            </form>
+            
+        </main>
+        
+    </div>
+
+    <script>
+        // Qualification data matching the keys in path.html
+        const qualifications = [
+            { key: "ssc", title: "SSC / 10th Class" },
+            { key: "inter-mpc", title: "Intermediate (MPC)" },
+            { key: "inter-bipc", title: "Intermediate (BiPC / Medical)" },
+            { key: "inter-commerce-arts", title: "Intermediate (CEC / MEC / HEC)" },
+            { key: "be-btech", title: "B.E / B.Tech (Engineering Graduate)" },
+            { key: "mbbs", title: "MBBS (Bachelor of Medicine)" },
+            { key: "bcom", title: "B.Com (Bachelor of Commerce)" },
+            { key: "bsc", title: "B.Sc (Bachelor of Science)" },
+            { key: "bca", title: "BCA / B.Sc. IT (Computer Applications)" },
+            { key: "ba", title: "B.A (Bachelor of Arts)" }
+        ];
+
+        const selectElement = document.getElementById('qualification');
+
+        // Populate the dropdown options
+        qualifications.forEach(q => {
+            const option = document.createElement('option');
+            option.value = q.key;
+            option.textContent = q.title;
+            selectElement.appendChild(option);
+        });
+
+        // Function to handle form submission and navigation
+        function navigateToPath(event) {
+            event.preventDefault();
+            const selectedKey = selectElement.value;
+            if (selectedKey) {
+                window.location.href = `path.html?degree=${selectedKey}`;
+            } else {
+                alert("Please select a valid qualification to find your path.");
+            }
+        }
+    </script>
+</body>
+</html>

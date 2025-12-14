@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Varshi - EduPath Navigator</title>
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-dark: #1e3a8a;
+            --accent: #3b82f6;
+            --success: #10b981;
+            --gray-100:#f1f5f9;
+            --gray-300:#d1d5db;
+            --gray-800:#1e293b;
+            --gray-900:#0f172a;
+            --white:#ffffff;
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--white);
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        /* Global background effects matching path.html */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -2;
+        }
+        
+        /* --- HEADER (Identical structure) --- */
+        .main-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow-xl);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .main-header h1 {
+            font-size: clamp(1.75rem, 4vw, 2.25rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--white) 0%, #e2e8f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+            letter-spacing: -0.025em;
+        }
+
+        /* --- Navigation Bar --- */
+        .nav-bar a {
+            color: var(--gray-100);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: background 0.3s, color 0.3s;
+            margin-left: 0.5rem;
+        }
+
+        .nav-bar a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+        }
+
+        .nav-bar .contact-btn {
+            background: var(--success);
+            color: var(--white);
+            font-weight: 700;
+        }
+        
+        .nav-bar .contact-btn:hover {
+            background: #047857; 
+        }
+
+        /* --- MAIN CONTENT CONTAINER (Simplified for single column) --- */
+        .container {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 2.5rem;
+            background-color: rgba(30, 41, 59, 0.6); 
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1s ease-out;
+            text-align: center; /* Center the main title and social links */
+        }
+        
+        .container h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 0.5rem;
+            display: inline-block; /* Keeps border width to the text length */
+        }
+
+        .content-block {
+            text-align: left; /* Align paragraphs normally */
+            margin-top: 1.5rem;
+        }
+
+        .content-block h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--success);
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .container p {
+            font-size: 1rem;
+            color: var(--gray-300);
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-links {
+            margin: 2rem 0 3rem 0;
+        }
+        .social-links a {
+            display: inline-block;
+            color: var(--gray-100);
+            text-decoration: none;
+            margin: 0 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            transition: background 0.3s, transform 0.3s;
+            font-weight: 500;
+            min-width: 150px;
+            text-align: center;
+        }
+        .social-links a:hover{
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        /* --- ANIMATIONS & RESPONSIVENESS --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .main-header { padding: 1rem; flex-direction: column; }
+            .main-header h1 { margin-bottom: 0.5rem; }
+            .nav-bar a { margin: 0.25rem; }
+            .container {
+                margin: 2rem 1rem;
+                padding: 1.5rem;
+            }
+            .container h2 { font-size: 2rem; }
+            .social-links a {
+                display: block;
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="main-header">
+        <a href="index.html" style="text-decoration: none;">
+            <h1>EduPath Navigator</h1>
+        </a>
+        <nav class="nav-bar">
+            <a href="index.html">Home</a>
+            <a href="#">Guide</a>
+            <a href="#" class="contact-btn">Contact</a>
+        </nav>
+    </header>
+    
+    <div class="container">
+        
+        <h2>Meet the Creator</h2>
+        
+        <div class="content-block">
+            
+          <section id="about">
+  <h2>About Me</h2>
+  <p>Hi, I’m Varshitha Munaganuri, a Computer Science engineer Graduate and the creator of EduPath Navigator.
+  I created this platform to help students and professionals find the right career paths and courses based on their qualifications. My goal is to make career planning simple and clear.</p>
+  <p>With a background in Computer Science and a passion for technology-driven education, I aim to provide tools and guidance that empower users to make confident decisions.</p>
+  <p>Feel free to explore the website and let EduPath Navigator guide you toward your next steps!</p>
+</section>
+
+
+            <h3>My Motivation: Solving the Confusion</h3>
+            <p>
+                The career path after completing a major qualification is often confusing. I noticed too many students and young professionals feeling lost when faced with endless course options and stream choices. I created EduPath Navigator to cut through that noise, providing a clear, personalized, and structured roadmap based *only* on your latest academic qualification. My goal is to transform that feeling of being lost into a sense of direction and control.
+            </p>
+
+            <h3>My Background & Technical Approach</h3>
+            <p>
+                With a background in **Computer Science Engineering**, I have the technical foundation necessary to build powerful, scalable, and user-friendly tools. I believe in simplifying complex decisions and utilizing modern web technologies to deliver reliable guidance. My work on this project is rooted in the open-source philosophy.
+            </p>
+
+        </div>
+        
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/varshitha-munaganuri-a730b7262" target="_blank">Connect on LinkedIn</a>
+
+            <a href="https://github.com/varshithamunaganuri" target="_blank">View Project on GitHub</a>
+        </div>
+        
+        <p style="font-size: 1.1rem; color: var(--success); margin-top: 1rem; font-weight: 600;">
+            Ready to find your own clarity? Use the EduPath Navigator now to plan your next steps with total confidence!
+        </p>
+        <a href="index.html" class="contact-btn" style="text-decoration: none; display: inline-block; padding: 1rem 2rem; background: var(--success); border-radius: 8px;">Start Navigating Your Path &rarr;</a>
+    </div>
+
+</body>
+</html>

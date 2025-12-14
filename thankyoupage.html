@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success! All the Best - EduPath Navigator</title>
+    <style>
+        /* --- COLOR VARIABLES (Consistent with your design) --- */
+        :root {
+            --primary: #1e40af; /* Dark Blue */
+            --primary-dark: #1e3a8a;
+            --accent: #3b82f6; /* Bright Blue */
+            --success: #10b981; /* Green Success */
+            --highlight-pink: #ff77c6; /* New Pink Highlight for "All the Best" */
+            --gray-800:#1e293b; 
+            --gray-900:#0f172a; /* Deepest Dark */
+            --white:#ffffff;
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        /* --- GLOBAL STYLES (Matching About Page BG) --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Dark Gradient Background (Matching all pages) */
+            background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-800) 50%, #334155 100%);
+            background-attachment: fixed;
+            color: var(--white);
+            text-align: center;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Global background effects (Matching About Page - the colorful dots) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -2;
+        }
+
+        /* --- MESSAGE BOX STYLES (Matching Image Mockup) --- */
+        .message-box {
+            /* Semi-transparent dark container */
+            background: rgba(30, 41, 59, 0.8); 
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); /* Deep shadow */
+            max-width: 450px;
+            width: 90%;
+            z-index: 10;
+            border: 2px solid var(--accent);
+            animation: fadeInScale 0.7s ease-out;
+        }
+
+        .header-title {
+            color: var(--gray-100);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .icon-row {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--success); /* Green for main icon */
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .icon-row .graduation-cap {
+            color: var(--accent); /* Blue for graduation cap */
+        }
+
+        .success-text {
+            color: var(--success);
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        /* Main body text */
+        .message-box p {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: var(--gray-300);
+        }
+
+        .career-message {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 25px 0;
+            /* Gradient for the "All the Best" text */
+            background: linear-gradient(90deg, var(--highlight-pink) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .continue-link-text {
+            font-style: italic;
+            color: var(--success);
+            margin-top: 20px;
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 30px;
+            background: var(--accent);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
+        }
+        
+        .back-link:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 500px) {
+            .message-box {
+                padding: 30px 20px;
+            }
+            .success-text {
+                font-size: 2rem;
+            }
+            .career-message {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="message-box">
+        <div class="header-title">EduPath Navigator</div>
+
+        <div class="icon-row">
+            <span role="img" aria-label="Book">📚</span>
+            <span class="graduation-cap" role="img" aria-label="Graduation Cap">🎓</span>
+        </div>
+        
+        <span class="success-text">Thank You!</span>
+        
+        <p>Your message has been successfully received. We will review your query and get back to you shortly.</p>
+
+        <div class="career-message">
+           Wishing You the Best on Your Career Journey!
+        </div>
+
+        <span class="continue-link-text">You may continue exploring or return to the Home Page.</span>
+
+        <a href="index.html" class="back-link">
+            &larr; Go to Home Page
+        </a>
+    </div>
+</body>
+</html>
